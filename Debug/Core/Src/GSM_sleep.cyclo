@@ -1,0 +1,2 @@
+../Core/Src/GSM_sleep.c:18:6:SIMTransmitSleep	1
+../Core/Src/GSM_sleep.c:24:6:sleep	1

@@ -1,0 +1,7 @@
+../Core/Src/GSM_MQTT.c:30:6:SIMTransmit	16	static
+../Core/Src/GSM_MQTT.c:37:6:SIMTransmit_TXOnly	16	static
+../Core/Src/GSM_MQTT.c:43:6:SIMReset	8	static
+../Core/Src/GSM_MQTT.c:47:6:extract_payload	32	static
+../Core/Src/GSM_MQTT.c:66:6:mqtt_conn	8	static
+../Core/Src/GSM_MQTT.c:85:6:mqtt_send	8	static
+../Core/Src/GSM_MQTT.c:108:6:mqtt_receive	8	static

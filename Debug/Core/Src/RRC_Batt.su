@@ -1,0 +1,4 @@
+../Core/Src/RRC_Batt.c:24:7:batt_charge1	24	static
+../Core/Src/RRC_Batt.c:45:7:batt_voltage1	24	static
+../Core/Src/RRC_Batt.c:66:7:batt_charge2	24	static
+../Core/Src/RRC_Batt.c:87:7:batt_voltage2	24	static
