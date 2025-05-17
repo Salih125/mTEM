@@ -81,6 +81,36 @@ void mqtt_conn(){
 	SIMTransmit(ATcommand_MQTT);
 }
 
+void mqtt_receiveconn(){
+	SIMTransmit("AT+CMQTTDISC=0,120\r\n");
+	// Release client and stop service
+	SIMTransmit("AT+CMQTTREL=0\r\n"); // Release the Client
+	SIMTransmit("AT+CMQTTSTOP\r\n"); // Stop MQTT Service
+
+	// Start MQTT service
+	SIMTransmit("AT+CMQTTSTART\r\n"); // Start MQTT Service
+	// Acquire client
+	SIMTransmit("AT+CMQTTACCQ=0,\"mqttclient\"\r\n"); // Acquire a Client
+
+	// Connect to a MQTT Server
+	sprintf(ATcommand_MQTT,"AT+CMQTTCONNECT=0,\"%s:%d\",60,1\r\n",host,port);
+	SIMTransmit(ATcommand_MQTT);
+
+    // subscribe and set topic
+    sprintf(ATcommand_MQTT, "AT+CMQTTSUB=0,%d,1\r\n", (int)strlen(topic));
+    SIMTransmit(ATcommand_MQTT);
+    sprintf(ATcommand_MQTT, "%s\r\n", topic);
+    SIMTransmit_TXOnly(ATcommand_MQTT);
+
+}
+
+void mqtt_disconn(){
+		SIMTransmit("AT+CMQTTDISC=0,120\r\n");
+		// Release client and stop service
+		SIMTransmit("AT+CMQTTREL=0\r\n"); // Release the Client
+		SIMTransmit("AT+CMQTTSTOP\r\n"); // Stop MQTT Service
+}
+
 
 void mqtt_send(){
 	mqtt_conn();
@@ -106,22 +136,7 @@ void mqtt_send(){
 }
 
 void mqtt_receive(void) {
-	// Start MQTT service
-	SIMTransmit("AT+CMQTTSTART\r\n"); // Start MQTT Service
-	// Acquire client
-	SIMTransmit("AT+CMQTTACCQ=0,\"mqttclient\"\r\n"); // Acquire a Client
-
-	// Connect to a MQTT Server
-	sprintf(ATcommand_MQTT,"AT+CMQTTCONNECT=0,\"%s:%d\",60,1\r\n",host,port);
-	SIMTransmit(ATcommand_MQTT);
-
-    // subscribe and set topic
-    sprintf(ATcommand_MQTT, "AT+CMQTTSUB=0,%d,1\r\n", (int)strlen(topic));
-    SIMTransmit(ATcommand_MQTT);
-    sprintf(ATcommand_MQTT, "%s\r\n", topic);
-    SIMTransmit_TXOnly(ATcommand_MQTT);
-
-    while (count<=5) {
+    while (count<=1) {
     	memset(receivedData, 0, sizeof(receivedData));
     	HAL_UART_Receive(&huart1, receivedData, sizeof(receivedData), 5000);
 
@@ -134,13 +149,8 @@ void mqtt_receive(void) {
     	//  HAL_UART_Transmit(&huart3, (uint8_t*)"\r\n", 2, 100);
     	}
 }
-	SIMTransmit("AT+CMQTTDISC=0,120\r\n");
-	// Release client and stop service
-	SIMTransmit("AT+CMQTTREL=0\r\n"); // Release the Client
-	SIMTransmit("AT+CMQTTSTOP\r\n"); // Stop MQTT Service
+    count = 0;
 }
-
-
 
 
 

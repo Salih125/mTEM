@@ -30,9 +30,14 @@ void SIMReset();
 
 void mqtt_conn();
 
+void mqtt_disconn();
+
 void mqtt_send();
 
 void mqtt_receive();
 
+void mqtt_receiveconn();
+
 void extract_payload(uint8_t *receivedData);
+
 #endif /* INC_GSM_MQTT_H_ */

@@ -1,2 +1,3 @@
-../Core/Src/GSM_time.c:18:6:SIMTransmitTime	16	static
-../Core/Src/GSM_time.c:24:6:date_time	32	static
+../Core/Src/GSM_time.c:19:6:SIMTransmitTime	16	static
+../Core/Src/GSM_time.c:25:6:startGPS	8	static
+../Core/Src/GSM_time.c:33:6:getTime	24	static

@@ -1,3 +1,5 @@
-../Core/Src/GSM_SMS.c:23:6:send_SMS	16	static
-../Core/Src/GSM_SMS.c:54:6:recieve_SMS	8	static
-../Core/Src/GSM_SMS.c:79:6:HAL_UART_RxCpltCallback	16	static
+../Core/Src/GSM_SMS.c:27:6:reset_GSM	8	static
+../Core/Src/GSM_SMS.c:33:6:delete_SMS	8	static
+../Core/Src/GSM_SMS.c:38:6:send_SMS	16	static
+../Core/Src/GSM_SMS.c:73:6:receive_SMS	8	static
+../Core/Src/GSM_SMS.c:99:6:HAL_UART_RxCpltCallback	24	static

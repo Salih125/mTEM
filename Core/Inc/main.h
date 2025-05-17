@@ -75,6 +75,26 @@ void Error_Handler(void);
 #define T_SWO_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
+#define RELAY1_Pin GPIO_PIN_0
+#define RELAY1_Port GPIOA
+#define RELAY2_Pin GPIO_PIN_1
+#define RELAY2_Port GPIOA
+#define RELAY3_Pin GPIO_PIN_4
+#define RELAY3_Port GPIOA
+#define RELAY4_Pin GPIO_PIN_0
+#define RELAY4_Port GPIOB
+#define RELAY5_Pin GPIO_PIN_1
+#define RELAY5_Port GPIOC
+#define RELAY6_Pin GPIO_PIN_0
+#define RELAY6_Port GPIOC
+#define RELAY7_Pin GPIO_PIN_6
+#define RELAY7_Port GPIOA
+#define Converter_Pin GPIO_PIN_7
+#define Converter_Port GPIOA
+#define DTR_Pin GPIO_PIN_6
+#define DTR_Port GPIOB
+
+
 
 /* USER CODE END Private defines */
 

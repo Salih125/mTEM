@@ -10,6 +10,7 @@ C_SRCS += \
 ../Core/Src/GSM_sleep.c \
 ../Core/Src/GSM_time.c \
 ../Core/Src/RRC_Batt.c \
+../Core/Src/Relay.c \
 ../Core/Src/main.c \
 ../Core/Src/stm32g4xx_hal_msp.c \
 ../Core/Src/stm32g4xx_it.c \
@@ -23,6 +24,7 @@ OBJS += \
 ./Core/Src/GSM_sleep.o \
 ./Core/Src/GSM_time.o \
 ./Core/Src/RRC_Batt.o \
+./Core/Src/Relay.o \
 ./Core/Src/main.o \
 ./Core/Src/stm32g4xx_hal_msp.o \
 ./Core/Src/stm32g4xx_it.o \
@@ -36,6 +38,7 @@ C_DEPS += \
 ./Core/Src/GSM_sleep.d \
 ./Core/Src/GSM_time.d \
 ./Core/Src/RRC_Batt.d \
+./Core/Src/Relay.d \
 ./Core/Src/main.d \
 ./Core/Src/stm32g4xx_hal_msp.d \
 ./Core/Src/stm32g4xx_it.d \
@@ -51,7 +54,7 @@ Core/Src/%.o Core/Src/%.su Core/Src/%.cyclo: ../Core/Src/%.c Core/Src/subdir.mk
 clean: clean-Core-2f-Src
 
 clean-Core-2f-Src:
-	-$(RM) ./Core/Src/GSM_MQTT.cyclo ./Core/Src/GSM_MQTT.d ./Core/Src/GSM_MQTT.o ./Core/Src/GSM_MQTT.su ./Core/Src/GSM_SMS.cyclo ./Core/Src/GSM_SMS.d ./Core/Src/GSM_SMS.o ./Core/Src/GSM_SMS.su ./Core/Src/GSM_sleep.cyclo ./Core/Src/GSM_sleep.d ./Core/Src/GSM_sleep.o ./Core/Src/GSM_sleep.su ./Core/Src/GSM_time.cyclo ./Core/Src/GSM_time.d ./Core/Src/GSM_time.o ./Core/Src/GSM_time.su ./Core/Src/RRC_Batt.cyclo ./Core/Src/RRC_Batt.d ./Core/Src/RRC_Batt.o ./Core/Src/RRC_Batt.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/stm32g4xx_hal_msp.cyclo ./Core/Src/stm32g4xx_hal_msp.d ./Core/Src/stm32g4xx_hal_msp.o ./Core/Src/stm32g4xx_hal_msp.su ./Core/Src/stm32g4xx_it.cyclo ./Core/Src/stm32g4xx_it.d ./Core/Src/stm32g4xx_it.o ./Core/Src/stm32g4xx_it.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.cyclo ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32g4xx.cyclo ./Core/Src/system_stm32g4xx.d ./Core/Src/system_stm32g4xx.o ./Core/Src/system_stm32g4xx.su
+	-$(RM) ./Core/Src/GSM_MQTT.cyclo ./Core/Src/GSM_MQTT.d ./Core/Src/GSM_MQTT.o ./Core/Src/GSM_MQTT.su ./Core/Src/GSM_SMS.cyclo ./Core/Src/GSM_SMS.d ./Core/Src/GSM_SMS.o ./Core/Src/GSM_SMS.su ./Core/Src/GSM_sleep.cyclo ./Core/Src/GSM_sleep.d ./Core/Src/GSM_sleep.o ./Core/Src/GSM_sleep.su ./Core/Src/GSM_time.cyclo ./Core/Src/GSM_time.d ./Core/Src/GSM_time.o ./Core/Src/GSM_time.su ./Core/Src/RRC_Batt.cyclo ./Core/Src/RRC_Batt.d ./Core/Src/RRC_Batt.o ./Core/Src/RRC_Batt.su ./Core/Src/Relay.cyclo ./Core/Src/Relay.d ./Core/Src/Relay.o ./Core/Src/Relay.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/stm32g4xx_hal_msp.cyclo ./Core/Src/stm32g4xx_hal_msp.d ./Core/Src/stm32g4xx_hal_msp.o ./Core/Src/stm32g4xx_hal_msp.su ./Core/Src/stm32g4xx_it.cyclo ./Core/Src/stm32g4xx_it.d ./Core/Src/stm32g4xx_it.o ./Core/Src/stm32g4xx_it.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.cyclo ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32g4xx.cyclo ./Core/Src/system_stm32g4xx.d ./Core/Src/system_stm32g4xx.o ./Core/Src/system_stm32g4xx.su
 
 .PHONY: clean-Core-2f-Src
 

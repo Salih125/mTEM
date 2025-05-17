@@ -28,6 +28,7 @@
 #include <GSM_MQTT.h>
 #include <GSM_time.h>
 #include <GSM_sleep.h>
+#include <Relay.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -56,22 +57,149 @@ UART_HandleTypeDef huart3;
 
 /* USER CODE BEGIN PV */
 uint8_t message[512] = {0};
-
+int scanDuration = 20000;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
-static void MX_USART1_UART_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_I2C2_Init(void);
 static void MX_USART3_UART_Init(void);
+static void MX_USART1_UART_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+// User-defined wakeup for powering instruments using SMS
+void power_system(const char* testtime){
+
+    HAL_UART_Transmit(&huart3, (uint8_t*)"testtime: ", 10, 100);
+    HAL_UART_Transmit(&huart3, (uint8_t*)testtime, strlen(testtime), 100);
+    HAL_UART_Transmit(&huart3, (uint8_t*)"\r\n", 2, 100);
+
+    HAL_UART_Transmit(&huart3, (uint8_t*)"timeGSM: ", 9, 100);
+    HAL_UART_Transmit(&huart3, (uint8_t*)timeGSM, strlen(timeGSM), 100);
+    HAL_UART_Transmit(&huart3, (uint8_t*)"\r\n", 2, 100);
+
+	if(strcmp(testtime, timeGSM) == 0){
+		relayOff(RELAY1_Port, RELAY1_Pin);
+		relayOn(RELAY2_Port, RELAY2_Pin);
+		relayOn(RELAY3_Port, RELAY3_Pin);
+		relayOn(RELAY4_Port, RELAY4_Pin);
+		relayOn(RELAY5_Port, RELAY5_Pin);
+		relayOn(RELAY6_Port, RELAY6_Pin);
+		relayOn(RELAY7_Port, RELAY7_Pin);
+		HAL_Delay(scanDuration); // Waits for the scan to complete
+	}else{
+		relayOff(RELAY1_Port, RELAY1_Pin);
+		relayOff(RELAY2_Port, RELAY2_Pin);
+		relayOff(RELAY3_Port, RELAY3_Pin);
+		relayOff(RELAY4_Port, RELAY4_Pin);
+		relayOff(RELAY5_Port, RELAY5_Pin);
+		relayOff(RELAY6_Port, RELAY6_Pin);
+		relayOff(RELAY7_Port, RELAY7_Pin);
+	}
+}
+
+// Decides which battery to charge
+void charge_batt(){
+	batt_temp1();
+	HAL_Delay(500);
+	batt_charge1();
+	HAL_Delay(1000);
+	batt_temp2();
+	HAL_Delay(500);
+	batt_charge2();
+	HAL_Delay(1000);
+
+	if(temp1 >= 60 || temp2 >= 60){
+		relayOff(RELAY1_Port, RELAY1_Pin);
+		relayOff(RELAY2_Port, RELAY2_Pin);
+		relayOff(RELAY3_Port, RELAY3_Pin);
+		relayOff(RELAY4_Port, RELAY4_Pin);
+		relayOff(RELAY5_Port, RELAY5_Pin);
+		relayOff(RELAY6_Port, RELAY6_Pin);
+		relayOff(RELAY7_Port, RELAY7_Pin);
+	}
+	else if(batt1 < batt2){
+		relayOn(RELAY1_Port, RELAY1_Pin);
+		relayOn(RELAY2_Port, RELAY2_Pin);
+		relayOff(RELAY3_Port, RELAY3_Pin);
+		relayOff(RELAY4_Port, RELAY4_Pin);
+		relayOff(RELAY5_Port, RELAY5_Pin);
+		relayOff(RELAY6_Port, RELAY6_Pin);
+		relayOff(RELAY7_Port, RELAY7_Pin);
+	}
+	else if(batt2 < batt1){
+		relayOn(RELAY1_Port, RELAY1_Pin);
+		relayOff(RELAY2_Port, RELAY2_Pin);
+		relayOn(RELAY3_Port, RELAY3_Pin);
+		relayOff(RELAY4_Port, RELAY4_Pin);
+		relayOff(RELAY5_Port, RELAY5_Pin);
+		relayOff(RELAY6_Port, RELAY6_Pin);
+		relayOff(RELAY7_Port, RELAY7_Pin);
+	}
+	else if(batt1 == batt2){
+		relayOn(RELAY1_Port, RELAY1_Pin);
+		relayOn(RELAY2_Port, RELAY2_Pin);
+		relayOff(RELAY3_Port, RELAY3_Pin);
+		relayOff(RELAY4_Port, RELAY4_Pin);
+		relayOff(RELAY5_Port, RELAY5_Pin);
+		relayOff(RELAY6_Port, RELAY6_Pin);
+		relayOff(RELAY7_Port, RELAY7_Pin);
+	}
+	else{
+		relayOff(RELAY1_Port, RELAY1_Pin);
+		relayOff(RELAY2_Port, RELAY2_Pin);
+		relayOff(RELAY3_Port, RELAY3_Pin);
+		relayOff(RELAY4_Port, RELAY4_Pin);
+		relayOff(RELAY5_Port, RELAY5_Pin);
+		relayOff(RELAY6_Port, RELAY6_Pin);
+		relayOff(RELAY7_Port, RELAY7_Pin);
+	}
+}
+
+void start_melody(){
+
+	for(int i = 0; i <= 5; i++){
+		relayOn(RELAY1_Port, RELAY1_Pin);
+		HAL_Delay(50);
+		relayOn(RELAY2_Port, RELAY2_Pin);
+		HAL_Delay(50);
+		relayOn(RELAY3_Port, RELAY3_Pin);
+		HAL_Delay(50);
+		relayOn(RELAY4_Port, RELAY4_Pin);
+		HAL_Delay(50);
+		relayOn(RELAY5_Port, RELAY5_Pin);
+		HAL_Delay(50);
+		relayOn(RELAY6_Port, RELAY6_Pin);
+		relayOn(RELAY7_Port, RELAY7_Pin);
+		HAL_Delay(50);
+		relayOff(RELAY1_Port, RELAY1_Pin);
+		relayOff(RELAY2_Port, RELAY2_Pin);
+		relayOff(RELAY3_Port, RELAY3_Pin);
+		relayOff(RELAY4_Port, RELAY4_Pin);
+		relayOff(RELAY5_Port, RELAY5_Pin);
+		relayOff(RELAY6_Port, RELAY6_Pin);
+		relayOff(RELAY7_Port, RELAY7_Pin);
+		HAL_Delay(100);
+	}
+
+}
+
+void run_mTEM(){
+	charge_batt();
+	HAL_Delay(500);
+	getTime();
+	HAL_Delay(500);
+	power_system("1135");
+	HAL_Delay(2000);
+	sleep();
+}
 
 /* USER CODE END 0 */
 
@@ -104,16 +232,22 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_USART1_UART_Init();
   MX_I2C1_Init();
   MX_I2C2_Init();
   MX_USART3_UART_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-//  recieve_SMS();
 //  mqtt_send();
-//  mqtt_receive();
-//  date_time();
-  sleep();
+//  sleep();
+//  mqtt_receiveconn();
+//  send_SMS("+4530861453", "codeTest");
+  relayOn(Converter_Port, Converter_Pin);
+//  start_melody();
+  startGPS();
+
+
+
+//	receive_SMS();
   /* USER CODE END 2 */
 
   /* Initialize led */
@@ -135,12 +269,26 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
+  while (1){
 
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  /*receive_SMS();
+	  HAL_Delay(10000);
+	  HAL_UART_AbortReceive_IT(&huart1);
+	  HAL_Delay(500);
+	  startGPS();
+	  getTime();
+	  HAL_Delay(500);
+	  HAL_UART_Receive_IT(&huart1, &rx_data, 1);
+	  power_system();
+	  HAL_Delay(5000);
+	  reset_GSM();
+	  HAL_Delay(10000);*/
+
+	  run_mTEM();
+
   }
   /* USER CODE END 3 */
 }
@@ -401,14 +549,37 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_0|GPIO_PIN_1, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin : PA0 */
-  GPIO_InitStruct.Pin = GPIO_PIN_0;
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_4|GPIO_PIN_6
+                          |GPIO_PIN_7, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0|GPIO_PIN_6, GPIO_PIN_RESET);
+
+  /*Configure GPIO pins : PC0 PC1 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PA0 PA1 PA4 PA6
+                           PA7 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_4|GPIO_PIN_6
+                          |GPIO_PIN_7;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PB0 PB6 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_6;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */

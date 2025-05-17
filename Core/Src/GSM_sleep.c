@@ -4,7 +4,6 @@
  *  Created on: Apr 11, 2025
  *      Author: salih
  */
-//Resets buffer and transmits and receives from uart1
 #include <string.h>
 #include <stdio.h>
 #include <stm32g4xx_hal.h>
@@ -22,7 +21,21 @@ void SIMTransmitSleep(char *cmd){
 }
 
 void sleep(){
-	SIMTransmitSleep("AT+CSCLK=1");
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);
+//	SIMTransmitSleep("AT+CRESET\r\n");
+//	HAL_Delay(10000);
+	SIMTransmitSleep("AT+CSCLK=1\r\n");
+	HAL_GPIO_WritePin(DTR_Port, DTR_Pin, GPIO_PIN_SET);
+	HAL_Delay(30000);
+
+	HAL_GPIO_WritePin(DTR_Port, DTR_Pin, GPIO_PIN_RESET);
+
+	while(1){
+		SIMTransmitSleep("AT\r\n");
+		if(strstr((char *)buffer_sleep, "OK\r\n")){
+			break;
+		}
+		HAL_Delay(100);
+	}
+
 }
 

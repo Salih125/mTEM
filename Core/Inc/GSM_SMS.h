@@ -13,10 +13,16 @@
 #include <stdio.h>
 
 extern UART_HandleTypeDef huart1;
+extern uint8_t rx_data;
+extern char recvTime[10];
+
+void reset_GSM();
+
+void delete_SMS();
 
 void send_SMS();
 
-void recieve_SMS();
+void  receive_SMS();
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
 #endif /* INC_GSM_SMS_H_ */

@@ -3,6 +3,7 @@
 "./Core/Src/GSM_sleep.o"
 "./Core/Src/GSM_time.o"
 "./Core/Src/RRC_Batt.o"
+"./Core/Src/Relay.o"
 "./Core/Src/main.o"
 "./Core/Src/stm32g4xx_hal_msp.o"
 "./Core/Src/stm32g4xx_it.o"

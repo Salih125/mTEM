@@ -16,9 +16,12 @@
 extern UART_HandleTypeDef huart1;
 extern UART_HandleTypeDef huart3;
 
+extern char timeGSM[10];
 
 void SIMTransmitTime(char *cmd);
 
-void date_time();
+void startGPS();
+
+void getTime();
 
 #endif /* INC_GSM_TIME_H_ */
