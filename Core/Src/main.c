@@ -237,13 +237,8 @@ int main(void)
   MX_USART3_UART_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-//  mqtt_send();
-//  sleep();
-//  mqtt_receiveconn();
-//  send_SMS("+4530861453", "codeTest");
-  relayOn(Converter_Port, Converter_Pin);
-//  start_melody();
-  startGPS();
+start_melody();
+startGPS();
 
 
 
@@ -274,18 +269,6 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  /*receive_SMS();
-	  HAL_Delay(10000);
-	  HAL_UART_AbortReceive_IT(&huart1);
-	  HAL_Delay(500);
-	  startGPS();
-	  getTime();
-	  HAL_Delay(500);
-	  HAL_UART_Receive_IT(&huart1, &rx_data, 1);
-	  power_system();
-	  HAL_Delay(5000);
-	  reset_GSM();
-	  HAL_Delay(10000);*/
 
 	  run_mTEM();
 
