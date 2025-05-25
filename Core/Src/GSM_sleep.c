@@ -21,8 +21,6 @@ void SIMTransmitSleep(char *cmd){
 }
 
 void sleep(){
-//	SIMTransmitSleep("AT+CRESET\r\n");
-//	HAL_Delay(10000);
 	SIMTransmitSleep("AT+CSCLK=1\r\n");
 	HAL_GPIO_WritePin(DTR_Port, DTR_Pin, GPIO_PIN_SET);
 	HAL_Delay(30000);
