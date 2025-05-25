@@ -14,8 +14,8 @@ extern UART_HandleTypeDef huart3;
 
 void extract_payload(uint8_t *receivedData);
 
-const char apn[]  = "internet"; // Change this to your Provider details
-const char host[] = "tcp://test.mosquitto.org"; // Change this to your host
+const char apn[]  = "internet"; 
+const char host[] = "tcp://test.mosquitto.org"; 
 const int  port = 1883;
 const char topic[] = "sim";
 char ATcommand_MQTT[100];
@@ -45,18 +45,17 @@ void SIMReset(){
 }
 
 void extract_payload(uint8_t *receivedData) {
-    char *ptr = strstr((char *)receivedData, "+CMQTTRXPAYLOAD:");
+    char *ptr = strstr((char *)receivedData, "+CMQTTRXPAYLOAD:"); // searching for "+CMQTTRXPAYLOAD:"
     if (ptr != NULL) {
-        // Gå til næste linje (hvor payload står)
         ptr = strchr(ptr, '\n');
         if (ptr != NULL) {
-            ptr++; // rykker én plads frem til starten af payload
-            char *end = strchr(ptr, '\r'); // slutningen af payload
+            ptr++; 
+            char *end = strchr(ptr, '\r'); 
             if (end != NULL) {
                 size_t len = end - ptr;
                 if (len < sizeof(payload)) {
                     strncpy(payload, ptr, len);
-                    payload[len] = '\0'; // null-terminate
+                    payload[len] = '\0';
                 }
             }
         }
